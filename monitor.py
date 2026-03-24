@@ -19,15 +19,12 @@ def obtener_precio(url):
     try:
         scraper = cloudscraper.create_scraper()
         response = scraper.get(url, timeout=20)
-        if response.status_code != 200:
-            return "Bloqueado"
+        if response.status_code != 200: return "Bloqueado"
         soup = BeautifulSoup(response.content, 'html.parser')
         precio_tag = soup.find('h2', class_='product-price')
-        if precio_tag:
-            return precio_tag.text.strip().replace('$', '').replace('.', '').replace(',', '').split()[0]
+        if precio_tag: return precio_tag.text.strip().replace('$', '').replace('.', '').replace(',', '').split()[0]
         return "Sin Stock"
-    except Exception:
-        return "Error"
+    except Exception: return "Error"
 
 def actualizar_excel():
     fecha = datetime.now().strftime("%d/%m/%Y")
@@ -35,8 +32,7 @@ def actualizar_excel():
     existe = os.path.isfile(archivo)
     with open(archivo, mode='a', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        if not existe:
-            writer.writerow(['Fecha', 'Componente', 'Precio ARS'])
+        if not existe: writer.writerow(['Fecha', 'Componente', 'Precio ARS'])
         for p in PRODUCTOS:
             precio = obtener_precio(p['url'])
             writer.writerow([fecha, p['nombre'], precio])
