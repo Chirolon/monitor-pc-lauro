@@ -1,15 +1,14 @@
 name: Monitor de Precios Lauro
 on:
   schedule:
-    # Esto corre todos los días a las 10:00 AM de Argentina
     - cron: '0 13 * * *' 
-  workflow_dispatch:      # Este añade el botón para que lo pruebes YA
+  workflow_dispatch:
 
 jobs:
   track-prices:
     runs-on: ubuntu-latest
     permissions:
-      contents: write    # PERMISO CLAVE: Deja que el bot guarde el Excel
+      contents: write
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v3
@@ -20,7 +19,7 @@ jobs:
           python-version: '3.10'
 
       - name: Instalar librerías necesarias
-        run: pip install requests beautifulsoup4
+        run: pip install requests beautifulsoup4  # <--- ESTO ES LO QUE FALTABA
 
       - name: Ejecutar el script de monitoreo
         run: python monitor.py
