@@ -5,7 +5,6 @@ from datetime import datetime
 import os
 import time
 
-# --- COMPONENTES ---
 PRODUCTOS = [
     {"nombre": "CPU: Ryzen 5 9600X", "url": "https://www.hardgamers.com.ar/search?text=Ryzen+5+9600X"},
     {"nombre": "GPU: RX 9060 XT 16GB", "url": "https://www.hardgamers.com.ar/search?text=RX+9060+XT+16GB"},
