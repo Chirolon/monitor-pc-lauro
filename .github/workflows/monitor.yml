@@ -19,7 +19,7 @@ jobs:
           python-version: '3.10'
 
       - name: Instalar librerías necesarias
-        run: pip install requests beautifulsoup4  # <--- ESTO ES LO QUE FALTABA
+        run: pip install requests beautifulsoup4 cloudscraper
 
       - name: Ejecutar el script de monitoreo
         run: python monitor.py
