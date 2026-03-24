@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 import time
 
-# --- TUS COMPONENTES (Hard Gamers ARG) ---
+# --- COMPONENTES ---
 PRODUCTOS = [
     {"nombre": "CPU: Ryzen 5 9600X", "url": "https://www.hardgamers.com.ar/search?text=Ryzen+5+9600X"},
     {"nombre": "GPU: RX 9060 XT 16GB", "url": "https://www.hardgamers.com.ar/search?text=RX+9060+XT+16GB"},
@@ -18,19 +18,14 @@ PRODUCTOS = [
 
 def obtener_precio(url):
     try:
-        # Esto intenta saltar el bloqueo de Hard Gamers
         scraper = cloudscraper.create_scraper()
         response = scraper.get(url, timeout=20)
-        
         if response.status_code != 200:
             return "Bloqueado"
-
         soup = BeautifulSoup(response.content, 'html.parser')
         precio_tag = soup.find('h2', class_='product-price')
-        
         if precio_tag:
             return precio_tag.text.strip().replace('$', '').replace('.', '').replace(',', '').split()[0]
-        
         return "Sin Stock"
     except Exception:
         return "Error"
@@ -39,17 +34,15 @@ def actualizar_excel():
     fecha = datetime.now().strftime("%d/%m/%Y")
     archivo = 'presupuesto_pc_lauro.csv'
     existe = os.path.isfile(archivo)
-    
     with open(archivo, mode='a', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         if not existe:
             writer.writerow(['Fecha', 'Componente', 'Precio ARS'])
-        
         for p in PRODUCTOS:
             precio = obtener_precio(p['url'])
             writer.writerow([fecha, p['nombre'], precio])
-            print(f"[{fecha}] {p['nombre']}: ${precio}")
-            time.sleep(5) # Esperamos para no ser bloqueados
+            print(f"{p['nombre']}: {precio}")
+            time.sleep(5)
 
 if __name__ == "__main__":
     actualizar_excel()
